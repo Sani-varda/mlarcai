@@ -1,0 +1,44 @@
+{
+  "llm": {
+    "provider": "ollama",
+    "model": "qwen2.5:7b",
+    "ollamaBaseUrl": "http://localhost:11434",
+    "openaiApiKey": "",
+    "openaiModel": "gpt-4o-mini",
+    "temperature": 0.8,
+    "maxTokens": 2048
+  },
+  "integrations": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "8929822075:AAE6gRIWbGHkeeQbV21WaY0XJjJWZhq_vYk"
+    },
+    "whatsapp": {
+      "enabled": false
+    }
+  },
+  "voice": {
+    "enabled": false,
+    "sttModel": "whisper-1",
+    "ttsVoice": "alloy"
+  },
+  "server": {
+    "port": 3000,
+    "host": "0.0.0.0"
+  },
+  "personality": {
+    "name": "Lobster",
+    "theme": "lobster",
+    "quirks": true,
+    "emojis": true,
+    "sassLevel": "medium"
+  },
+  "memory": {
+    "enabled": true,
+    "maxHistory": 50,
+    "contextWindow": 10
+  },
+  "browser": {
+    "mode": "real"
+  }
+}

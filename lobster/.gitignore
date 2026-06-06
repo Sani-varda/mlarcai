@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+data/
+*.log
+*.err
+body.json
+.wwebjs_auth/
+wwebjs_auth/
+wwebjs_cache/
