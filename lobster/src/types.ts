@@ -16,6 +16,15 @@ export interface Config {
     enabled: boolean;
     sttModel: string;
     ttsVoice: string;
+    conversation?: {
+      wakeWordEnabled: boolean;
+      wakeWord: string;
+      silenceTimeoutMs: number;
+      minSpeechMs: number;
+      maxSpeechMs: number;
+      followUpWindowMs: number;
+      vadThreshold: number;
+    };
   };
   server: {
     port: number;
@@ -32,10 +41,37 @@ export interface Config {
     enabled: boolean;
     maxHistory: number;
     contextWindow: number;
+    longTermEnabled?: boolean;
+    summarizationEnabled?: boolean;
   };
   browser: {
     mode: 'real' | 'headless';
   };
+  skills: {
+    enabled: boolean;
+    paths: string[];
+  };
+  workflows: {
+    enabled: boolean;
+    directory: string;
+  };
+  scheduler: {
+    enabled: boolean;
+    heartbeatIntervalMinutes: number;
+  };
+  agents: {
+    defaultAgentId: string;
+    list: AgentConfig[];
+  };
+}
+
+export interface AgentConfig {
+  id: string;
+  name: string;
+  description: string;
+  personalityTheme?: string;
+  allowedTools?: string[];
+  workspace?: string;
 }
 
 export interface ChatMessage {
@@ -49,7 +85,9 @@ export interface Conversation {
   id: string;
   platform: string;
   userId: string;
+  agentId?: string;
   messages: ChatMessage[];
+  summary?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -101,4 +139,73 @@ export interface ToolCall {
     name: string;
     arguments: string;
   };
+}
+
+export interface WorkflowStep {
+  name: string;
+  tool?: string;
+  input?: Record<string, string>;
+  condition?: string;
+  approval?: boolean;
+  timeout?: number;
+  agentId?: string;
+}
+
+export interface WorkflowDefinition {
+  name: string;
+  description: string;
+  version: string;
+  steps: WorkflowStep[];
+  onComplete?: string;
+  onError?: string;
+}
+
+export enum WorkflowStatus {
+  PENDING = 'pending',
+  RUNNING = 'running',
+  AWAITING_APPROVAL = 'awaiting_approval',
+  COMPLETED = 'completed',
+  FAILED = 'failed',
+  CANCELLED = 'cancelled',
+}
+
+export interface WorkflowExecution {
+  id: string;
+  workflowName: string;
+  status: WorkflowStatus;
+  currentStep: number;
+  steps: WorkflowStep[];
+  results: Record<string, string>;
+  errors: Record<string, string>;
+  resumeToken?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ScheduledTask {
+  id: string;
+  name: string;
+  description: string;
+  cronExpression: string;
+  workflowName: string;
+  workflowInput?: Record<string, string>;
+  enabled: boolean;
+  lastRun?: Date;
+  nextRun?: Date;
+}
+
+export interface SkillDefinition {
+  name: string;
+  description: string;
+  version: string;
+  author?: string;
+  tools?: ToolDefinition[];
+  toolMap?: Record<string, (...args: string[]) => Promise<string>>;
+  onLoad?: () => Promise<void>;
+  onUnload?: () => Promise<void>;
+  dependencies?: string[];
+}
+
+export interface AgentRouter {
+  route(platform: string, userId: string, text: string): string;
 }

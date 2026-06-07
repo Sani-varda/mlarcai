@@ -23,10 +23,23 @@ export function loadConfig(): Config {
   if (process.env.ENABLE_WHATSAPP !== undefined) {
     config.integrations.whatsapp.enabled = process.env.ENABLE_WHATSAPP === 'true';
   }
-
   if (config.llm.openaiApiKey) {
     config.llm.provider = 'openai';
   }
+
+  if (!config.skills) config.skills = { enabled: true, paths: [] };
+  if (!config.workflows) config.workflows = { enabled: true, directory: '' };
+  if (!config.scheduler) config.scheduler = { enabled: false, heartbeatIntervalMinutes: 30 };
+  if (!config.agents) {
+    config.agents = {
+      defaultAgentId: 'main',
+      list: [
+        { id: 'main', name: 'Lobster', description: 'Main general-purpose lobster assistant', personalityTheme: 'lobster', allowedTools: [], workspace: '' },
+      ],
+    };
+  }
+  if (!config.memory.longTermEnabled) config.memory.longTermEnabled = false;
+  if (!config.memory.summarizationEnabled) config.memory.summarizationEnabled = false;
 
   cachedConfig = config;
   return config;

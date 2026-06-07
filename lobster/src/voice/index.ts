@@ -2,6 +2,7 @@ import type { Config, VoiceRequest, VoiceResponse } from '../types.js';
 import { SpeechToText } from './stt.js';
 import { TextToSpeech } from './tts.js';
 import { logger } from '../utils/logger.js';
+import { VoiceConversation } from './conversation.js';
 
 export class VoiceModule {
   private stt: SpeechToText;
@@ -29,3 +30,7 @@ export class VoiceModule {
     return { text, audioBuffer };
   }
 }
+
+export { VoiceConversation };
+export { SpeechToText } from './stt.js';
+export { TextToSpeech } from './tts.js';

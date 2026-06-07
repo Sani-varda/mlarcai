@@ -14,12 +14,15 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@ricky0123/vad-node": "^0.0.3",
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
     "duckduckgo-search": "^1.0.7",
+    "edge-tts": "^1.0.1",
     "express": "^5.1.0",
     "figlet": "^1.8.0",
     "inquirer": "^12.5.2",
+    "mic": "^2.1.2",
     "node-telegram-bot-api": "^0.66.0",
     "openai": "^4.93.0",
     "playwright": "^1.60.0",
